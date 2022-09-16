@@ -1,0 +1,14 @@
+{% load blog_extras %}
+
+<div class="post">
+            <p>{% get_poster_display review.user %} a publié une critique<p>
+            <p> {{ review.headline }} -
+            {% if review.rating == 0 %} ☆☆☆☆☆ {% endif %}
+            {% if review.rating == 1 %} ★☆☆☆☆ {% endif %}
+            {% if review.rating == 2 %} ★★☆☆☆ {% endif %}
+            {% if review.rating == 3 %} ★★★☆☆ {% endif %}
+            {% if review.rating == 4 %} ★★★★☆ {% endif %}
+            {% if review.rating == 5 %} ★★★★★ {% endif %}
+            </p>
+            <p>{{ review.body }}</p>
+          <p>{{ review.time_created }}</p>

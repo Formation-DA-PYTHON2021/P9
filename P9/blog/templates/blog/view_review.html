@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid_container">
+    <h4>Vous avez publié une critique : </h4>
+    <h2>titre : {{ review.headline }} </h2>
+    {% if review.rating == 0 %}<p>☆☆☆☆☆</p>{% endif %}
+    {% if review.rating == 1 %}<p>★☆☆☆☆</p>{% endif %}
+    {% if review.rating == 2 %}<p>★★☆☆☆</p>{% endif %}
+    {% if review.rating == 3 %}<p>★★★☆☆</p>{% endif %}
+    {% if review.rating == 4 %}<p>★★★★☆</p>{% endif %}
+    {% if review.rating == 5 %}<p>★★★★★</p>{% endif %}
+    <p>{{ review.body }}</p>
+    <p><a href="{% url 'edit_review' review.id %}">Modifier la critique</a></p>
+</div>
+<div class="grid_container">
+        <p>en lien avec le ticket :  {{ review.ticket }}</p>
+        {% for instance in
+</div>
+{% endblock content %}

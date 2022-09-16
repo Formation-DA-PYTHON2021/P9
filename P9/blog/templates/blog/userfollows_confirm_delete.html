@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+  <form method="post">
+    {% csrf_token %}
+     <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Unsubscribe</legend>
+      <h3>Êtes-vous sûr de vouloir vous désabonner de {{unsub.followed_user }}?</h3>
+     </fieldset>
+      <button type="submit">Oui</button>
+      <a href="{% url 'follow_users' %}">Non</a>
+  </form>
+
+{% endblock content %}

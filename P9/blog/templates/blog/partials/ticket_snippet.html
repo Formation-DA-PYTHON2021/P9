@@ -1,0 +1,14 @@
+{% load blog_extras %}
+
+<div class="post">
+            <p>{% get_poster_display ticket.user %} a demandé une critique</p>
+            <p>{{ ticket.title }}</p>
+            <p>{{ ticket.description }}</p>
+            {% if ticket.image %}
+                <img src="{{ ticket.image.url }}">
+            {% else %}
+                <img scr="![](../../../../media/book.png)">
+            {% endif %}
+            <p>{{ ticket.time_created }}</p>
+             <p><a href="{% url 'create_review' %}">Créer une critique</a></p>
+        </div>
