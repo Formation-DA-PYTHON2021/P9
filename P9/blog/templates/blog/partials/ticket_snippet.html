@@ -10,5 +10,5 @@
                 <img scr="![](../../../../media/book.png)">
             {% endif %}
             <p>{{ ticket.time_created }}</p>
-             <p><a href="{% url 'create_review' %}">Créer une critique</a></p>
-        </div>
+             <p><a href="{% url 'create_review' ticket.id %}">Créer une critique</a></p>
+</div>

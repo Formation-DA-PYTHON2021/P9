@@ -11,9 +11,8 @@
     {% if review.rating == 5 %}<p>★★★★★</p>{% endif %}
     <p>{{ review.body }}</p>
     <p><a href="{% url 'edit_review' review.id %}">Modifier la critique</a></p>
-</div>
-<div class="grid_container">
-        <p>en lien avec le ticket :  {{ review.ticket }}</p>
-        {% for instance in
+    <br/>
+    <p>Cette critique répond au ticket :  </p>
+    <p>{{ review.ticket }}</p>
 </div>
 {% endblock content %}

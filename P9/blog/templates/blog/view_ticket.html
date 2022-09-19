@@ -5,5 +5,5 @@
     <img src="{{ ticket.image.url }}">
     <p><a href="{% url 'edit_ticket' ticket.id %}">Modifier le ticket</a></p>
 {# écrire une condition pour ne pas permettre de faire une review si elle existe déjà}
-    <p><a href="{% url 'create_review' %}">Créer une critique</a></p>
+    <p><a href="{% url 'create_review' ticket.id %}">Créer une critique</a></p>
 {% endblock content %}

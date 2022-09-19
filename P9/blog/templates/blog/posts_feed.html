@@ -5,21 +5,29 @@
 
  <h1>Vos Posts</h1>
 
-  <div class="grid-container">
-    {% for instance in page_obj %}
-      {% if instance|model_type == 'Ticket' %}
-        {% include 'blog/partials/ticket_snippet.html' with ticket=instance %}
-      {% endif %}
-      {% endfor %}
-  </div>
-  <div class="grid-container">
-          {% for instance in page_obj %}
-      {% if instance|model_type == 'Review' %}
-        {% include 'blog/partials/review_snippet.html' with review=instance %}
-      <p></p>
-      {% endif %}
-          {% endfor %}
+    <div class="grid-container">
+        <div class="post">
+            {% for instance in page_obj %}
+            {% if instance|model_type == 'Ticket' %}
+            {% include 'blog/partials/ticket_snippet.html' with ticket=instance %}
+            {% endif %}
+            {% endfor %}
         </div>
+
   </div>
-{% include 'blog/partials/paginator_snippet.html' %}
+<br/>
+    <div class="grid-container">
+        <div class="post">
+            {% for instance in page_obj %}
+            {% if instance|model_type == 'Review' %}
+            {% include 'blog/partials/review_snippet.html' with review=instance %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+<div>
+    {% include 'blog/partials/paginator_snippet.html' %}
+</div>
+
 {% endblock content %}

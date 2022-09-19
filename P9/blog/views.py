@@ -1,15 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import DeleteView
+
 from django.core.paginator import Paginator
 from itertools import chain
 from django.http import HttpResponseNotFound
-from django.contrib import messages
-from django.db import IntegrityError
+
 from . import forms, models
-from authentication.models import User
-from django.contrib.auth.models import User
+
+
 
 @login_required
 def home(request):
@@ -31,8 +29,9 @@ def view_ticket(request, ticket_id):
 
 @login_required
 def create_ticket(request):
-    form = forms.TicketForm(request.POST, request.FILES)
+    form = forms.TicketForm()
     if request.method == 'POST':
+        form = forms.TicketForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.user = request.user
@@ -44,11 +43,12 @@ def create_ticket(request):
 @login_required
 def edit_ticket(request, ticket_id):
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
-    edit_form = forms.TicketForm(instance=ticket)
+    edit_form = forms.EditTicketForm(instance=ticket)
     delete_form = forms.DeleteTicketForm
     if request.method == 'POST':
+        #if request.user == ticket.user à vérifier
         if 'edit_ticket' in request.POST:
-            edit_form = forms.TicketForm(request.POST, instance=ticket)
+            edit_form = forms.EditTicketForm(request.POST, instance=ticket)
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('home')
@@ -57,8 +57,8 @@ def edit_ticket(request, ticket_id):
             if delete_form.is_valid():
                 ticket.delete()
                 return redirect('home')
-    else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        else:
+            return HttpResponseNotFound('<h1>Page not found</h1>')
     context = {
         'edit_form': edit_form,
         'delete_form': delete_form,
@@ -73,22 +73,25 @@ def view_review(request, review_id):
 
 
 @login_required
-def create_review(request, ticket):
-    numbers_tickets = models.Review.objects.filter(ticket=ticket)
+def create_review(request, ticket_id):
+    ticket = get_object_or_404(models.Ticket, id=ticket_id)
     review_form = forms.ReviewForm()
     if request.method == 'POST':
+        review_form = forms.ReviewForm(request.POST)
         if review_form.is_valid():
             review = review_form.save(commit=False)
             review.user = request.user
             review.save()
             return redirect('home')
-    return render(request, 'blog/create_review.html', context={'review_form': review_form})
+    return render(request, 'blog/create_review.html', context={'review_form': review_form, 'ticket': ticket})
 
 @login_required
 def create_review_without_ticket(request):
-    ticket_form = forms.TicketForm(request.POST, request.FILES)
-    review_form = forms.ReviewForm(request.POST)
+    ticket_form = forms.TicketForm()
+    review_form = forms.ReviewForm()
     if request.method == 'POST':
+        review_form = forms.ReviewForm(request.POST)
+        ticket_form = forms.TicketForm(request.POST, request.FILES)
         if all([ticket_form.is_valid(), review_form.is_valid()]):
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
@@ -107,11 +110,11 @@ def create_review_without_ticket(request):
 @login_required
 def edit_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
-    edit_form = forms.ReviewForm(instance=review)
+    edit_form = forms.EditReviewForm(instance=review)
     delete_form = forms.DeleteReviewForm()
     if request.method == 'POST':
         if 'edit_review' in request.POST:
-            edit_form = forms.ReviewForm(request.POST, instance=review)
+            edit_form = forms.EditReviewForm(request.POST, instance=review)
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('home')
@@ -120,48 +123,13 @@ def edit_review(request, review_id):
             if delete_form.is_valid():
                 review.delete()
                 return redirect('home')
-    else:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+        else:
+            return HttpResponseNotFound('<h1>Page not found</h1>')
     context = {
         'edit_form': edit_form,
         'delete_form': delete_form,
     }
     return render(request, 'blog/edit_review.html', context=context)
-
-
-@login_required
-def follow_users(request):
-    if request.method == 'POST':
-        form = forms.FollowUsersForm(request.POST, instance=request.user)
-        if form.is_valid():
-            try:
-                followed_user = User.objects.get(username=request.POST['followed_user'])
-                if request.user == followed_user:
-                    messages.error(request, f"Vous ne pouvez pas vous abonner à vous même")
-                else:
-                    try:
-                        models.UserFollows.objects.create(user=request.user, followed_user=followed_user)
-                        messages.success(request, f"Vous êtes abonner à {followed_user}.")
-                    except IntegrityError:
-                        messages.error(request, f"Vous êtes déjà abonner à cet utilisateur")
-            except User.DoesNotExist:
-                messages.error(request, f"Cet utilisateur n'existe pas")
-        else:
-            messages.error(request, f"l'utilisateur n'existe pas.")
-    else:
-        form = forms.FollowUsersForm()
-
-    user_follows = models.UserFollows.objects.filter(user=request.user).order_by('followed_user')
-    followed_by = models.UserFollows.objects.filter(followed_user=request.user).order_by('user')
-
-    context = {
-        'form': form,
-        'user_follows': user_follows,
-        'followed_by' : followed_by,
-
-    }
-
-    return render(request, 'blog/follow_users_form.html', context=context)
 
 
 def posts_feed(request):
@@ -176,17 +144,31 @@ def posts_feed(request):
     return render(request, 'blog/posts_feed.html', context=context)
 
 
-class UnsubscribeView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = models.UserFollows
-    success_url = 'follow-users/'
-    context_object_name = 'unsub'
+@login_required
+def follow_users(request):
+    form = forms.FollowUsersForm(request.POST, instance=request.user)
+    user_follows = models.UserFollows.objects.filter(user=request.user)
+    followed_by = models.UserFollows.objects.filter(followed_user=request.user)
+    if request.method == 'POST':
+        form = forms.FollowUsersForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {
+        'form': form,
+        'user_follows': user_follows,
+        'followed_by': followed_by,
+    }
+    return render(request, 'blog/follow_users.html', context=context)
 
-    def test_func(self):
-        unsub = self.get_object()
-        if self.request.user == unsub.user:
-            return True
-        return False
 
-    def delete(self, request, *args, **kwargs):
-        messages.warning(self.request, f'Vous avez cessé de suivre {self.get_object().followed_user}.')
-        return super(UnsubscribeView, self).delete(request, *args, **kwargs)
+def delete_followed_user(request, user_id):
+    followed_user = get_object_or_404(models.UserFollows, id=user_id)
+    delete_form = forms.DeleteFollowedUser()
+    if request.method == 'POST':
+        delete_form = forms.DeleteFollowedUser(request.POST)
+        if delete_form.is_valid():
+            followed_user.delete()
+            return redirect('home')
+    context = {'delete_form': delete_form}
+    return render(request, 'blog/follow_users.html', context=context)

@@ -1,22 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Créer une critique</h2>
-        <div class="grid_container">
-        <p>Vous êtes en train de poster en réponse à {{ ticket}} </p>
+
+    <h1>Créer une critique</h1>
+    <h3>Vous êtes en train de poster en réponse à : </h3>
+    <div class="grid-container">
+        <div class="post">
             <p>{{ ticket.user }} a demandé une critique </p>
-        <p> De : {{ ticket.title }}</p>
-        <p> {{ ticket.description }}</p>
-        {% if ticket.image %}
+            <p> De : {{ ticket.title }}</p>
+            <p> {{ ticket.description }}</p>
+            {% if ticket.image %}
                 <img src="{{ ticket.image.url }}">
             {% else %}
                 <img scr="![](../../../../media/book.png)">
             {% endif %}
-</div>
-        <p>_____________________________________________________________</p>
-   <form method="post" enctype="multipart/form-data">
-        <h3> Critique </h3>
-        {{ review_form.as_p }}
-        {% csrf_token %}
-        <button type="submit">Envoyer</button>
-   </form>
+        </div>
+<br/>
+        <div class="post">
+            <form method="post" enctype="multipart/form-data">
+            <h3> Critique </h3>
+            {{ review_form.as_p }}
+            {% csrf_token %}
+            <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
+
 {% endblock content %}
