@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+  <form method="post">
+    {% csrf_token %}
+     <fieldset>
+      <legend>Désabonnement</legend>
+      <h3>Êtes-vous sûr de vouloir vous désabonner de {{ followed_user }} ?</h3>
+     </fieldset>
+      <div>
+          <from method="POST" enctype="multipart/form-data">
+              {{ delete_form }}
+              {% csrf_token %}
+              <button type="submit">Oui</button>
+              <button type="submit"><a href="{% url 'follow_users' %}">Non</a></button>
+          </from>
+      </div>
+
+  </form>
+
+{% endblock content %}

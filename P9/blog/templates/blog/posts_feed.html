@@ -6,6 +6,7 @@
  <h1>Vos Posts</h1>
 
     <div class="grid-container">
+        <h2>Vos demandes de critique</h2>
         <div class="post">
             {% for instance in page_obj %}
             {% if instance|model_type == 'Ticket' %}
@@ -17,13 +18,17 @@
   </div>
 <br/>
     <div class="grid-container">
-        <div class="post">
+        <h2>Vos critiques</h2>
+        <fieldset>
             {% for instance in page_obj %}
             {% if instance|model_type == 'Review' %}
             {% include 'blog/partials/review_snippet.html' with review=instance %}
             {% endif %}
             {% endfor %}
-        </div>
+              {% if not instance|model_type == 'Review' %}
+                <h5>Vous avez publier aucune critique</h5>
+            {% endif %}
+        </fieldset>
     </div>
 
 <div>

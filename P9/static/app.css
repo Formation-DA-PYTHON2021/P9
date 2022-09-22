@@ -2,6 +2,37 @@ html {
     font-family: Arial;
 }
 
+.btn-wrapper{
+  top: calc(50% - 22px);
+  left: 0;
+  width: 100%;
+  text-align: center;
+
+}
+
+.btn{
+
+  background-color: #1d3030;
+  height: 45px;
+  line-height: 42px;
+  padding: 0 30px;
+  font-size: 20px;
+  border-radius: 30px;
+  color: #ffffe6;
+  cursor: pointer;
+  transition: all .5s;
+  transition-timing-function: cubic-bezier(.2, 3, .4, 1);
+  user-select: none;
+
+  &:hover{
+    transform: scale(1.1, 1.1);
+  }
+
+  &:active{
+    transform: scale(1.05, 1.05);
+  }
+}
+
 .contener {
     border-width:1px;
     border-style:dotted;

@@ -23,6 +23,7 @@ urlpatterns = [
     path('signup/', authentication.views.signup_page, name='signup'),
     path('follow-users/', blog.views.follow_users, name='follow_users'),
     path('follow-user/delete-followed-user/<int:user_id>/', blog.views.delete_followed_user, name='delete_followed_user'),
+    path('follow-user/confirm_unsub/<int:user_id>/', blog.views.delete_followed_user, name='confirm_unsub'),
     path('ticket/<int:ticket_id>/', blog.views.view_ticket, name='view_ticket'),
     path('ticket/create/', blog.views.create_ticket, name='create_ticket'),
     path('ticket/<int:ticket_id>/edit/', blog.views.edit_ticket, name='edit_ticket'),

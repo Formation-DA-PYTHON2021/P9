@@ -1,40 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Suivre des utilisateurs</h2>
+    <h2>Suivre d'autres utilisateurs</h2>
      <fieldset>
-        <form method="POST">
+        <form method="POST" action="{% url 'follow_users' %}" enctype="multipart/form-data">
+            {{ form.as_p }}
             {% csrf_token %}
-            <label for="followed_user"></label>
-            <input id="followed_user" type="text" name="followed_user" placeholder="Enter le nom">
-            <div>
-                <button type="submit">S'abonner</button>
-            </div>
+            <button type="submit">Envoyer</button>
         </form>
       </fieldset>
 
 
-    <h2>Utilisateurs suivis ({{ user_follows.count }})</h2>
+    <h2>Abonnements ({{ user_follows.count }})</h2>
         {% if user_follows %}
     <ul>
         {% for follow in user_follows %}
-        <li>{{ follow.followed_user.username }} | <a href="{% url 'delete_followed_user' follow.id %}">Unsubscribe</a></li>
+        <li>{{ follow.followed_user.username }} | <a href="{% url 'delete_followed_user' follow.id %}">Désabonner</a></li>
         {% endfor %}
     </ul>
     {% elif not followed_user %}
-    <h5>You are not subscribed to anyone.</h5>
+        <h5>Aucun utilisateur vous suit.</h5>
     {% endif %}
 
 
- <!-- Followers -->
-    <h2>Utilisateurs qui vous suivent ({{ followed_by.count }})</h2>
-        <ul>
-           {% if followed_by %}
-            {% for follow in followed_by %}
-              <li>{{ follow.user.username }}</li>
-            {% endfor %}
-        </ul>
-      {% elif not followed_by %}
+
+    <h2>Abonnés ({{ followed_by.count }})</h2>
+    {% if followed_by %}
+    <ul>
+        {% for follow in followed_by %}
+        <li>{{ follow.user.username }}</li>
+        {% endfor %}
+    </ul>
+    {% elif not followed_by %}
         <h5>No one is following you.</h5>
-      {% endif %}
+    {% endif %}
 
 {% endblock content %}

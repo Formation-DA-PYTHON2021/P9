@@ -36,12 +36,9 @@ class DeleteReviewForm(forms.Form):
 
 User = get_user_model()
 
-class FollowUsersForm(forms.ModelForm):
+class FollowUsersForm(forms.Form):
     followed_user = forms.CharField(label=False, widget=forms.TextInput())
-    class Meta:
-        model = User
-        fields = ['follows']
 
 
 class DeleteFollowedUser(forms.Form):
-    delete_followed = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+    delete_follow = forms.BooleanField(widget=forms.HiddenInput, initial=True)

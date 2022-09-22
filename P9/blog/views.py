@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
+from django.conf import settings
 from django.core.paginator import Paginator
 from itertools import chain
 from django.http import HttpResponseNotFound
 
 from . import forms, models
-
+from authentication.models import User
 
 
 @login_required
@@ -146,14 +146,22 @@ def posts_feed(request):
 
 @login_required
 def follow_users(request):
-    form = forms.FollowUsersForm(request.POST, instance=request.user)
+    form = forms.FollowUsersForm()
     user_follows = models.UserFollows.objects.filter(user=request.user)
     followed_by = models.UserFollows.objects.filter(followed_user=request.user)
     if request.method == 'POST':
-        form = forms.FollowUsersForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
+        form = forms.FollowUsersForm(request.POST)
+        try:
+            followed_user = User.objects.get(
+                username=request.POST['followed_user']
+            )
+        except User.DoesNotExist:
+            followed_user = None
+        if followed_user and form.is_valid():
+            models.UserFollows.objects.create(user=request.user, followed_user=followed_user)
+            return redirect('follow_users')
+        else:
+            print('utilisateur n existe pas')
     context = {
         'form': form,
         'user_follows': user_follows,
@@ -163,12 +171,13 @@ def follow_users(request):
 
 
 def delete_followed_user(request, user_id):
-    followed_user = get_object_or_404(models.UserFollows, id=user_id)
+    follow = get_object_or_404(models.UserFollows, id=user_id)
+    followed_user = follow.followed_user
     delete_form = forms.DeleteFollowedUser()
-    if request.method == 'POST':
+    if 'delete_follow' in request.POST:
         delete_form = forms.DeleteFollowedUser(request.POST)
         if delete_form.is_valid():
-            followed_user.delete()
-            return redirect('home')
-    context = {'delete_form': delete_form}
-    return render(request, 'blog/follow_users.html', context=context)
+            follow.delete()
+            return redirect('follow_users')
+    context = {'delete_form': delete_form, 'followed_user': followed_user}
+    return render(request, 'blog/delete_followed_user.html', context=context)

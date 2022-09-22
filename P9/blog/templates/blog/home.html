@@ -4,28 +4,28 @@
 {% block content %}
   <h1>Votre flux</h1>
 
-    <nav>
-      <p><a href="{% url 'create_ticket' %}">Demander une critique</a></p>
-      <p><a href="{% url 'create_review_without_ticket' %}">Créer une critique</a></p>
-    </nav>
+    <div class="btn-wrapper">
+      <button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'create_ticket' %}">Demander une critique</a></button>
+      <button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'create_review_without_ticket' %}">Créer une critique</a></button>
+    </div>
 
     <div class="grid-container">
-      <div class="post">
+      <fieldset>
         {% for instance in page_obj %}
       {% if instance|model_type == 'Ticket' %}
       {% include 'blog/partials/ticket_snippet.html' with ticket=instance %}
-      </div>
+    </fieldset>
     </div>
 
 <br/>
 
   <div class="grid-container">
-    <div class="post">
+    <fieldset>
       {% elif instance|model_type == 'Review' %}
         {% include 'blog/partials/review_snippet.html' with review=instance %}
       {% endif %}
     {% endfor %}
-    </div>
+    </fieldset>
   </div>
 
 
