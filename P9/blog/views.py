@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from itertools import chain
 from django.http import HttpResponseNotFound
 from django.contrib import messages
+from django.db import IntegrityError
 
 from . import forms, models
 from authentication.models import User
@@ -80,8 +81,15 @@ def create_review(request, ticket_id):
         review_form = forms.ReviewForm(request.POST)
         if review_form.is_valid():
             review = review_form.save(commit=False)
-            review.user = request.user
-            review.save()
+            models.Review.objects.create(
+                ticket=ticket,
+                user=request.user,
+                headline=request.POST['headline'],
+                rating=request.POST['rating'],
+                body=request.POST['body']
+            )
+            ticket.review = True
+            ticket.save()
             return redirect('home')
     return render(request, 'blog/create_review.html', context={'review_form': review_form, 'ticket': ticket})
 
@@ -104,7 +112,6 @@ def create_review_without_ticket(request):
                 rating=request.POST['rating'],
                 body=request.POST['body']
             )
-            review.user = request.user
             return redirect('posts_feed')
     context = {
         'ticket_form': ticket_form,
@@ -165,15 +172,19 @@ def follow_users(request):
                 if request.user == followed_user:
                     messages.error(request, 'Vous ne pouvez pas vous suivre vous-même!')
                     return redirect('follow_users')
+                else:
+                    try:
+                        models.UserFollows.objects.create(user=request.user, followed_user=followed_user)
+                        messages.success(request, f"Vous êtes abonné maintenant à {followed_user}.")
+                        return redirect('follow_users')
+                    except IntegrityError:
+                        messages.error(request, f'Vous êtes déjà adonné à {followed_user}.')
+                        return redirect('follow_users')
             except User.DoesNotExist:
-                followed_user = None
-            if followed_user:
-                models.UserFollows.objects.create(user=request.user, followed_user=followed_user)
-                messages.success(request, f"Vous suivez maintenant {followed_user}.")
-                return redirect('follow_users')
-            else:
-                messages.error(request, "l'utilisateur n'existe pas.")
-                return redirect('follow_users')
+                messages.error(request, f' {form.data["followed_user"]} n\'existe pas.')
+        else:
+            form = forms.FollowUsersForm()
+
     context = {
         'form': form,
         'user_follows': user_follows,

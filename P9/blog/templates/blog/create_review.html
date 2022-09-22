@@ -17,14 +17,14 @@
     </div>
 
     <div class="grid-container">
-        <fieldset>
             <form method="post" enctype="multipart/form-data">
-            <h3> Critique </h3>
-            {{ review_form.as_p }}
-            {% csrf_token %}
-            <button type="submit" class="btn">Envoyer</button>
+                <fieldset>
+                    <h3> Critique </h3>
+                    {{ review_form.as_p }}
+                    {% csrf_token %}
+                </fieldset>
+                <button type="submit" class="btn">Envoyer</button>
             </form>
-        </fieldset>
     </div>
 
 {% endblock content %}

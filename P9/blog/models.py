@@ -10,6 +10,7 @@ class Ticket(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
+    review = models.BooleanField(default=False)
     IMAGE_MAX_SIZE = (800, 800)
 
     if image is True:

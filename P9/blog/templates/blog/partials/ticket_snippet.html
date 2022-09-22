@@ -10,6 +10,8 @@
                 <img scr="![](../../../../media/book.png)">
             {% endif %}
             <p>{{ ticket.time_created }}</p>
-             <p><a href="{% url 'create_review' ticket.id %}">Créer une critique</a></p>
+            {% if ticket.review is False %}
+                <p><a href="{% url 'create_review' ticket.id %}">Créer une critique</a></p>
+            {% endif %}
 </div>
 <br/>

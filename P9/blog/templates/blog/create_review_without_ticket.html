@@ -2,22 +2,20 @@
 {% block content %}
 
     <h2>Créer une critique</h2>
-    <fieldset>
+   <div class="grid-container">
         <form method="post" enctype="multipart/form-data">
-            <h3>Livre / Article</h3>
-            {% csrf_token %}
-            {{ ticket_form.as_p }}
-    </fieldset>
-
-<br/>
-    <fieldset>
-            <h3> Critique </h3>
-            {{ review_form.as_p }}
-            {% csrf_token %}
-    </fieldset>
+            <fieldset>
+                <h3>Livre / Article</h3>
+                {% csrf_token %}
+                {{ ticket_form.as_p }}
+            </fieldset>
+            <fieldset>
+                <h3> Critique </h3>
+                {{ review_form.as_p }}
+                {% csrf_token %}
+            </fieldset>
             <button type="submit" class="btn">Envoyer</button>
-
         </form>
-
+   </div>
 
 {% endblock content %}
