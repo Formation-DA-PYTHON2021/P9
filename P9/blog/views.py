@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
 from django.core.paginator import Paginator
 from itertools import chain
 from django.http import HttpResponseNotFound
+from django.contrib import messages
 
 from . import forms, models
 from authentication.models import User
@@ -87,8 +87,8 @@ def create_review(request, ticket_id):
 
 @login_required
 def create_review_without_ticket(request):
-    ticket_form = forms.TicketForm()
     review_form = forms.ReviewForm()
+    ticket_form = forms.TicketForm()
     if request.method == 'POST':
         review_form = forms.ReviewForm(request.POST)
         ticket_form = forms.TicketForm(request.POST, request.FILES)
@@ -97,9 +97,15 @@ def create_review_without_ticket(request):
             ticket.user = request.user
             ticket.save()
             review = review_form.save(commit=False)
+            models.Review.objects.create(
+                ticket=ticket,
+                user=request.user,
+                headline=request.POST['headline'],
+                rating=request.POST['rating'],
+                body=request.POST['body']
+            )
             review.user = request.user
-            review.save()
-            return redirect('home')
+            return redirect('posts_feed')
     context = {
         'ticket_form': ticket_form,
         'review_form': review_form
@@ -151,17 +157,23 @@ def follow_users(request):
     followed_by = models.UserFollows.objects.filter(followed_user=request.user)
     if request.method == 'POST':
         form = forms.FollowUsersForm(request.POST)
-        try:
-            followed_user = User.objects.get(
-                username=request.POST['followed_user']
-            )
-        except User.DoesNotExist:
-            followed_user = None
-        if followed_user and form.is_valid():
-            models.UserFollows.objects.create(user=request.user, followed_user=followed_user)
-            return redirect('follow_users')
-        else:
-            print('utilisateur n existe pas')
+        if form.is_valid():
+            try:
+                followed_user = User.objects.get(
+                    username=request.POST['followed_user']
+                )
+                if request.user == followed_user:
+                    messages.error(request, 'Vous ne pouvez pas vous suivre vous-même!')
+                    return redirect('follow_users')
+            except User.DoesNotExist:
+                followed_user = None
+            if followed_user:
+                models.UserFollows.objects.create(user=request.user, followed_user=followed_user)
+                messages.success(request, f"Vous suivez maintenant {followed_user}.")
+                return redirect('follow_users')
+            else:
+                messages.error(request, "l'utilisateur n'existe pas.")
+                return redirect('follow_users')
     context = {
         'form': form,
         'user_follows': user_follows,

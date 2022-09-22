@@ -12,8 +12,8 @@
           <from method="POST" enctype="multipart/form-data">
               {{ delete_form }}
               {% csrf_token %}
-              <button type="submit">Oui</button>
-              <button type="submit"><a href="{% url 'follow_users' %}">Non</a></button>
+              <button type="submit" class="btn">Oui</button>
+              <button type="submit" class="btn"><a href="{% url 'follow_users' %}" style="color: #ffffe6">Non</a></button>
           </from>
       </div>
 

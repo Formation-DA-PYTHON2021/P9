@@ -21,6 +21,12 @@ class DeleteTicketForm(forms.Form):
 
 
 class ReviewForm(forms.ModelForm):
+    rating = forms.ChoiceField(
+        initial=1,
+        label="Rating",
+        widget=forms.RadioSelect(),
+        choices=((1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"))
+    )
     class Meta:
         model = models.Review
         fields = ['headline', 'rating', 'body']

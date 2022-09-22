@@ -29,7 +29,7 @@ urlpatterns = [
     path('ticket/<int:ticket_id>/edit/', blog.views.edit_ticket, name='edit_ticket'),
     path('review/<int:review_id>/', blog.views.view_review, name='view_review'),
     path('review/create/review-without-ticket/', blog.views.create_review_without_ticket, name='create_review_without_ticket'),
-    path('review/create/<int:ticket>/', blog.views.create_review, name='create_review'),
+    path('review/create/<int:ticket_id>/', blog.views.create_review, name='create_review'),
     path('review/<int:review_id>/edit/', blog.views.edit_review, name='edit_review'),
     path('posts/', blog.views.posts_feed, name='posts_feed')
 

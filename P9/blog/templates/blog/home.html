@@ -10,21 +10,24 @@
     </div>
 
     <div class="grid-container">
+      <h2>Les demandes de critiques</h2>
       <fieldset>
         {% for instance in page_obj %}
-      {% if instance|model_type == 'Ticket' %}
-      {% include 'blog/partials/ticket_snippet.html' with ticket=instance %}
-    </fieldset>
+        {% if instance|model_type == 'Ticket' %}
+        {% include 'blog/partials/ticket_snippet.html' with ticket=instance %}
+        {% endif %}
+        {% endfor %}
+      </fieldset>
     </div>
 
-<br/>
-
   <div class="grid-container">
+    <h2>Les critiques</h2>
     <fieldset>
-      {% elif instance|model_type == 'Review' %}
-        {% include 'blog/partials/review_snippet.html' with review=instance %}
+      {% for instance in page_obj %}
+      {% if instance|model_type == 'Review' %}
+      {% include 'blog/partials/review_snippet.html' with review=instance %}
       {% endif %}
-    {% endfor %}
+      {% endfor %}
     </fieldset>
   </div>
 

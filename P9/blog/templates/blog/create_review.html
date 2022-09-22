@@ -4,7 +4,7 @@
     <h1>Créer une critique</h1>
     <h3>Vous êtes en train de poster en réponse à : </h3>
     <div class="grid-container">
-        <div class="post">
+        <fieldset>
             <p>{{ ticket.user }} a demandé une critique </p>
             <p> De : {{ ticket.title }}</p>
             <p> {{ ticket.description }}</p>
@@ -13,16 +13,18 @@
             {% else %}
                 <img scr="![](../../../../media/book.png)">
             {% endif %}
-        </div>
-<br/>
-        <div class="post">
+        </fieldset>
+    </div>
+
+    <div class="grid-container">
+        <fieldset>
             <form method="post" enctype="multipart/form-data">
             <h3> Critique </h3>
             {{ review_form.as_p }}
             {% csrf_token %}
-            <button type="submit">Envoyer</button>
+            <button type="submit" class="btn">Envoyer</button>
             </form>
-        </div>
+        </fieldset>
     </div>
 
 {% endblock content %}
