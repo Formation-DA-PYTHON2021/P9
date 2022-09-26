@@ -14,6 +14,7 @@ Projet 9 formation Open Classrooms : Développez une application Web en utilisan
 
 ## Technologies utilisées
 Python - version 3.9.5
+
 Django - version 4.1
 
 
