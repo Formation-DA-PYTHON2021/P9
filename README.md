@@ -35,7 +35,7 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 
 ``cd P9``
 
-``python -m env\Scripts\activate``
+``python -m venv env\Scripts\activate``
 
 - Installer les paquets requis avec la commande : 
 
