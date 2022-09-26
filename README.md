@@ -59,7 +59,7 @@ Identifiant : Superuser | Mot de passe : S3cret!!
 
 - Liste des utilisateurs existants :
 
-| User name     | Password User |
+| User name     |User  Password |
 | ------------- | ------------- |
 | test1         | S3cret!!      |
 | test2         | S3cret!!      |
