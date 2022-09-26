@@ -1,5 +1,5 @@
 """
-ASGI config for P9 project.
+ASGI config for LITReview project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'P9.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LITReview.settings')
 
 application = get_asgi_application()

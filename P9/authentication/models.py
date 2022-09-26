@@ -11,7 +11,9 @@ class User(AbstractUser):
         (CREATOR, 'Créateur'),
         (SUBSCRIBER, 'Abonné')
     )
-    role = models.CharField(max_length=30, choices=ROLE_CHOISES, verbose_name='Rôle')
+    role = models.CharField(max_length=30,
+                            choices=ROLE_CHOISES,
+                            verbose_name='Rôle')
 
     follows = models.ManyToManyField(
         'self',
@@ -19,5 +21,6 @@ class User(AbstractUser):
         symmetrical=False,
         verbose_name='suit',
     )
+
     def __str__(self):
         return self.username

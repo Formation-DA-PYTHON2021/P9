@@ -2,7 +2,7 @@
 
 <div class="post">
             <p>{% get_poster_display ticket.user %} a demandé une critique</p>
-            <p>{{ ticket.title }}</p>
+            <p>{{ ticket.title }}   - <a href="{% url 'view_ticket' ticket.id %}">voir</a></p>
             <p>{{ ticket.description }}</p>
             {% if ticket.image %}
                 <img src="{{ ticket.image.url }}">
@@ -13,5 +13,6 @@
             {% if ticket.review is False %}
                 <p><a href="{% url 'create_review' ticket.id %}">Créer une critique</a></p>
             {% endif %}
+
 </div>
 <br/>

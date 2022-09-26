@@ -10,7 +10,7 @@
       </fieldset>
 
 
-    <h2>Abonnements ({{ user_follows.count }})</h2>
+    <h2>Vous suivez {{ user_follows.count }} utilisateurs : </h2>
         {% if user_follows %}
     <ul>
         {% for follow in user_follows %}
@@ -23,7 +23,7 @@
 
 
 
-    <h2>Abonnés ({{ followed_by.count }})</h2>
+    <h2>Suivi par {{ followed_by.count }} utilisateurs :</h2>
     {% if followed_by %}
     <ul>
         {% for follow in followed_by %}

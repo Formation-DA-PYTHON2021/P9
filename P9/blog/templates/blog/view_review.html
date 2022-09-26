@@ -1,18 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="grid_container">
-    <h4>Vous avez publié une critique : </h4>
-    <h2>titre : {{ review.headline }} </h2>
-    {% if review.rating == 0 %}<p>☆☆☆☆☆</p>{% endif %}
-    {% if review.rating == 1 %}<p>★☆☆☆☆</p>{% endif %}
-    {% if review.rating == 2 %}<p>★★☆☆☆</p>{% endif %}
-    {% if review.rating == 3 %}<p>★★★☆☆</p>{% endif %}
-    {% if review.rating == 4 %}<p>★★★★☆</p>{% endif %}
-    {% if review.rating == 5 %}<p>★★★★★</p>{% endif %}
-    <p>{{ review.body }}</p>
-    <p><a href="{% url 'edit_review' review.id %}">Modifier la critique</a></p>
+    <h2>Vous avez publié une critique : </h2>
+    <fieldset>
+        <h4>titre : {{ review.headline }} </h4>
+        {% if review.rating == 0 %}<p>☆☆☆☆☆</p>{% endif %}
+        {% if review.rating == 1 %}<p>★☆☆☆☆</p>{% endif %}
+        {% if review.rating == 2 %}<p>★★☆☆☆</p>{% endif %}
+        {% if review.rating == 3 %}<p>★★★☆☆</p>{% endif %}
+        {% if review.rating == 4 %}<p>★★★★☆</p>{% endif %}
+        {% if review.rating == 5 %}<p>★★★★★</p>{% endif %}
+        <p>{{ review.body }}</p>
+    </fieldset>
+    <button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'edit_review' review.id %}">Modifier la critique</a></button>
     <br/>
-    <p>Cette critique répond au ticket :  </p>
-    <p>{{ review.ticket }}</p>
+    <h3>Cette critique répond au ticket :  </h3>
+        <fieldset>
+            <p>{{ ticket.user }} a demandé une critique </p>
+            <p> De : {{ ticket.title }}</p>
+            <p> {{ ticket.description }}</p>
+            {% if ticket.image %}
+                <img src="{{ ticket.image.url }}">
+            {% else %}
+                <img scr="![](../../../../media/book.png)">
+            {% endif %}
+        </fieldset>
 </div>
+<button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'home' %}">Retour</a></button>
 {% endblock content %}

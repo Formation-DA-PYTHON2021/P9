@@ -5,6 +5,7 @@ from itertools import chain
 from django.http import HttpResponseNotFound
 from django.contrib import messages
 from django.db import IntegrityError
+from django.db.models import Q
 
 from . import forms, models
 from authentication.models import User
@@ -12,9 +13,23 @@ from authentication.models import User
 
 @login_required
 def home(request):
-    tickets = models.Ticket.objects.filter(user__in=request.user.follows.all())
-    reviews = models.Review.objects.filter(user__in=request.user.follows.all())
-    tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda instance: instance.time_created, reverse=True)
+    followed_users = []
+    followings = models.UserFollows.objects.filter(user=request.user)
+    for following in followings:
+        followed_users.append(following.followed_user)
+
+    tickets = models.Ticket.objects.filter(
+        Q(user__in=followed_users) |
+        Q(user=request.user)
+    )
+    reviews = models.Review.objects.filter(
+        Q(user__in=followed_users) |
+        Q(user=request.user),
+        Q(ticket__in=tickets)
+    )
+    tickets_and_reviews = sorted(chain(tickets, reviews),
+                                 key=lambda instance: instance.time_created,
+                                 reverse=True)
 
     paginator = Paginator(tickets_and_reviews, 6)
     page_numer = request.GET.get('page')
@@ -27,6 +42,7 @@ def home(request):
 def view_ticket(request, ticket_id):
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
     return render(request, 'blog/view_ticket.html', {'ticket': ticket})
+
 
 @login_required
 def create_ticket(request):
@@ -44,10 +60,12 @@ def create_ticket(request):
 @login_required
 def edit_ticket(request, ticket_id):
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
+    if request.user != ticket.user:
+        return redirect('home')
+
     edit_form = forms.EditTicketForm(instance=ticket)
     delete_form = forms.DeleteTicketForm
     if request.method == 'POST':
-        #if request.user == ticket.user à vérifier
         if 'edit_ticket' in request.POST:
             edit_form = forms.EditTicketForm(request.POST, instance=ticket)
             if edit_form.is_valid():
@@ -70,7 +88,12 @@ def edit_ticket(request, ticket_id):
 @login_required
 def view_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
-    return render(request, 'blog/view_review.html', context={'review': review})
+    ticket_id = review.ticket.pk
+    print(ticket_id)
+    ticket = get_object_or_404(models.Ticket, id=ticket_id)
+
+    return render(request, 'blog/view_review.html',
+                  context={'review': review, 'ticket': ticket})
 
 
 @login_required
@@ -80,7 +103,7 @@ def create_review(request, ticket_id):
     if request.method == 'POST':
         review_form = forms.ReviewForm(request.POST)
         if review_form.is_valid():
-            review = review_form.save(commit=False)
+            review_form.save(commit=False)
             models.Review.objects.create(
                 ticket=ticket,
                 user=request.user,
@@ -91,7 +114,12 @@ def create_review(request, ticket_id):
             ticket.review = True
             ticket.save()
             return redirect('home')
-    return render(request, 'blog/create_review.html', context={'review_form': review_form, 'ticket': ticket})
+        context = {
+            'review_form': review_form,
+            'ticket': ticket
+        }
+    return render(request, 'blog/create_review.html', context=context)
+
 
 @login_required
 def create_review_without_ticket(request):
@@ -104,7 +132,7 @@ def create_review_without_ticket(request):
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
             ticket.save()
-            review = review_form.save(commit=False)
+            review_form.save(commit=False)
             models.Review.objects.create(
                 ticket=ticket,
                 user=request.user,
@@ -117,12 +145,16 @@ def create_review_without_ticket(request):
         'ticket_form': ticket_form,
         'review_form': review_form
     }
-    return render(request, 'blog/create_review_without_ticket.html', context=context)
+    return render(request, 'blog/create_review_without_ticket.html',
+                  context=context)
 
 
 @login_required
 def edit_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
+    if request.user != review.user:
+        return redirect('home')
+
     edit_form = forms.EditReviewForm(instance=review)
     delete_form = forms.DeleteReviewForm()
     if request.method == 'POST':
@@ -148,7 +180,9 @@ def edit_review(request, review_id):
 def posts_feed(request):
     reviews = models.Review.objects.filter(user=request.user)
     tickets = models.Ticket.objects.filter(user=request.user)
-    tickets_and_reviews = sorted(chain(tickets, reviews), key=lambda instance: instance.time_created, reverse=True)
+    tickets_and_reviews = sorted(chain(tickets, reviews),
+                                 key=lambda instance: instance.time_created,
+                                 reverse=True)
 
     paginator = Paginator(tickets_and_reviews, 6)
     page_numer = request.GET.get('page')
@@ -170,18 +204,31 @@ def follow_users(request):
                     username=request.POST['followed_user']
                 )
                 if request.user == followed_user:
-                    messages.error(request, 'Vous ne pouvez pas vous suivre vous-même!')
+                    messages.error(request,
+                                   'Vous ne pouvez pas vous suivre vous-même!')
                     return redirect('follow_users')
                 else:
                     try:
-                        models.UserFollows.objects.create(user=request.user, followed_user=followed_user)
-                        messages.success(request, f"Vous êtes abonné maintenant à {followed_user}.")
+                        models.UserFollows.objects.create(
+                            user=request.user,
+                            followed_user=followed_user
+                        )
+                        messages.success(
+                            request,
+                            f"Vous êtes abonné maintenant à {followed_user}."
+                        )
                         return redirect('follow_users')
                     except IntegrityError:
-                        messages.error(request, f'Vous êtes déjà adonné à {followed_user}.')
+                        messages.error(
+                            request,
+                            f'Vous êtes déjà adonné à {followed_user}.'
+                        )
                         return redirect('follow_users')
             except User.DoesNotExist:
-                messages.error(request, f' {form.data["followed_user"]} n\'existe pas.')
+                messages.error(
+                    request,
+                    f' {form.data["followed_user"]} n\'existe pas.'
+                )
         else:
             form = forms.FollowUsersForm()
 

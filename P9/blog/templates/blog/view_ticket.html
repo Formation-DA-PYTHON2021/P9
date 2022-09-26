@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>{{ ticket.title }}</h2>
-    <p>{{ ticket.description }}</p>
-    <img src="{{ ticket.image.url }}">
-    <p><a href="{% url 'edit_ticket' ticket.id %}">Modifier le ticket</a></p>
-{# écrire une condition pour ne pas permettre de faire une review si elle existe déjà}
-    <p><a href="{% url 'create_review' ticket.id %}">Créer une critique</a></p>
+<div class="grid_container">
+    <h2>Vous avez publié une critique : </h2>
+      <fieldset>
+        <h2>{{ ticket.title }}</h2>
+        <p>{{ ticket.description }}</p>
+        <img src="{{ ticket.image.url }}">
+      </fieldset>
+    {% if ticket.user == request.user %}
+        <button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'edit_ticket' ticket.id %}">Modifier le ticket</a></button>
+    {% endif %}
+    <button type="button" class="btn"><a style="color: #ffffe6"  href="{% url 'create_review' ticket.id %}">Créer une critique</a></button>
+<button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'home' %}">Retour</a></button>
 {% endblock content %}

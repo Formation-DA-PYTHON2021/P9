@@ -11,81 +11,53 @@ html {
 }
 
 .btn{
-
   background-color: #1d3030;
-  height: 45px;
-  line-height: 42px;
-  padding: 0 30px;
-  font-size: 20px;
+  height: 37px;
+  line-height: 32px;
+  padding: 0 20px;
+  font-size: 17px;
   border-radius: 30px;
   color: #ffffe6;
   cursor: pointer;
-  transition: all .5s;
-  transition-timing-function: cubic-bezier(.2, 3, .4, 1);
-  user-select: none;
-
-  &:hover{
-    transform: scale(1.1, 1.1);
-  }
-
-  &:active{
-    transform: scale(1.05, 1.05);
-  }
 }
+
+
 
 .contener {
     border-width:1px;
     border-style:dotted;
     border-color:black;
 }
-/* The sidebar menu */
+
 .sidebar {
-    height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 220px; /* Set the width of the sidebar */
-    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
+    height: 100%;
+    width: 220px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
     left: 0;
     background-color: #1d3030;
     color:  #ffffe6;
-    overflow-x: hidden; /* Disable horizontal scroll */
+    overflow-x: hidden;
     padding-top: 15px;
     padding-left: 10px;
     padding-right: 10px;
 }
 
-/* The navigation menu links */
 .sidebar a {
     text-decoration: none;
     color:  #ffffe6;
     display: block;
 }
 
-/* When you mouse over the navigation links, change their color */
-.sidebar a:hover {
-    color: #f1f1f1;
-}
-
-/* Style page content */
-
 .main {
-    margin-left: 240px; /* Same as the width of the sidebar */
+    margin-left: 240px;
     padding: 20px;
-}
-
-.avatar {
-    width: 80%;
-    border-radius: 10%;
-    display: block;
-    margin: auto;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .grid-container {
     display: grid;
     padding: 20px;
-
 }
 
 .post{
