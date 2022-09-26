@@ -23,7 +23,7 @@ Django - version 4.1
 Création d'une interface web permettant à la communauté LITReview de consulter ou de solliciter une critique de livres à la demande.
 
 
-## Installation :
+## Installation 
 - Vous devez installer l'application "LITReview" disponible sur le lien : 
 https://github.com/Formation-DA-PYTHON2021/P9.git
 
