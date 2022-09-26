@@ -57,7 +57,13 @@ Identifiant : Superuser | Mot de passe : S3cret!!
 
 - → http://127.0.0.1:8000/admin/
 
-- Liste des utilisateurs existants
+- Liste des utilisateurs existants :
+
+| User name     | Password User |
+| ------------- | ------------- |
+| test1         | S3cret!!      |
+| test2         | S3cret!!      |
+
 
 ### Fonctionnalités
 - Se connecter et s'inscrire ;
