@@ -33,11 +33,11 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 
 - Activer l'environnement virtuel avec la commande: 
 
-``cd P9``
-
 ``python -m venv env\Scripts\activate``
 
 - Installer les paquets requis avec la commande : 
+
+``cd P9``
 
 ``pip install -r requirements.txt``
 
@@ -55,10 +55,11 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 -- Identifiant : Superuser | Mot de passe : S3cret!!
 - Liste des utilisateurs existants :
 
-| User name     |User  Password |
+| User name     |User Password  |
 | ------------- | ------------- |
-| test1         | S3cret!!      |
-| test2         | S3cret!!      |
+| camille_201   | S3cret!!      |
+| pierre_442    | S3cret!!      |
+| julie_293     | S3cret!!      |
 
 
 ### Fonctionnalités
