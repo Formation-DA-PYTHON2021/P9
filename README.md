@@ -35,12 +35,16 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 '''cd P9 python -m env\Scripts\activate'''
 
 - Installer les paquets requis avec la commande : 
+
+
 '''pip install -r requirements.txt'''
 
 #### Démarage : 
 
 Lancer le serveur Django avec la commande : 
-'''python manage.py runserver'''
+
+
+''''python manage.py runserver''''
 
 Dans le navigateur de votre choix, se rendre à l'adresse http://127.0.0.1:8000/
 
