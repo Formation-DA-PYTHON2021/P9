@@ -43,28 +43,29 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 
 #### Démarage : 
 
-Lancer le serveur Django avec la commande : 
+- Lancer le serveur Django avec la commande : 
 
 ``python manage.py runserver``
 
-Dans le navigateur de votre choix, se rendre à l'adresse http://127.0.0.1:8000/
+- Dans le navigateur de votre choix, se rendre à l'adresse http://127.0.0.1:8000/
 
 #### Informations complémentaires : 
 
-Django administration : 
+- Django administration :
+
 Identifiant : Superuser | Mot de passe : S3cret!!
 
-→ http://127.0.0.1:8000/admin/
+- → http://127.0.0.1:8000/admin/
 
-Liste des utilisateurs existants
+- Liste des utilisateurs existants
 
 ### Fonctionnalités
-Se connecter et s'inscrire ;
-Consulter un flux contenant les demandes de critique et des critiques des utilisateurs auxquels on est abonné ;
-Créer des tickets de demande de critique ;
-Créer des critiques, en réponse ou non à des tickets ;
-Voir ses propres posts, les modifier ou les supprimer ;
-Suivre d'autres utilisateurs, ou se désabonner.
+- Se connecter et s'inscrire ;
+- Consulter un flux contenant les demandes de critique et des critiques des utilisateurs auxquels on est abonné ;
+- Créer des tickets de demande de critique ;
+- Créer des critiques, en réponse ou non à des tickets ;
+- Voir ses propres posts, les modifier ou les supprimer ;
+- Suivre d'autres utilisateurs, ou se désabonner.
 
 ## L'état du projet
 Le projet est : complet
