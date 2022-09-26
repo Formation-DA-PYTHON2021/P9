@@ -51,12 +51,8 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 
 #### Informations complémentaires : 
 
-- Django administration :
-
-Identifiant : Superuser | Mot de passe : S3cret!!
-
-- → http://127.0.0.1:8000/admin/
-
+- Django administration : http://127.0.0.1:8000/admin/
+-- Identifiant : Superuser | Mot de passe : S3cret!!
 - Liste des utilisateurs existants :
 
 | User name     |User  Password |
