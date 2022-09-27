@@ -55,7 +55,7 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 -- Identifiant : Superuser | Mot de passe : S3cret!!
 - Liste des utilisateurs existants :
 
-| Nom           | Mot de Passe  | Abonné à :    | Suivie part   |
+| Nom           | Mot de Passe  | Abonné à      | Suivie part   |
 | ------------- | ------------- | ------------- | ------------- |
 | Camille_201   | S3cret!!      | julie_293     |               |
 | pierre_442    | S3cret!!      | julie_293     | julie_293     |
