@@ -33,11 +33,13 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 
 - Activer l'environnement virtuel avec la commande: 
 
-``cd P9``
+``python -m venv env``
 
-``python -m env\Scripts\activate``
+``source env\Scripts\activate``
 
 - Installer les paquets requis avec la commande : 
+
+``cd P9``
 
 ``pip install -r requirements.txt``
 
@@ -51,18 +53,15 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 
 #### Informations complémentaires : 
 
-- Django administration :
-
-Identifiant : Superuser | Mot de passe : S3cret!!
-
-- → http://127.0.0.1:8000/admin/
-
+- Django administration : http://127.0.0.1:8000/admin/
+-- Identifiant : Superuser | Mot de passe : S3cret!!
 - Liste des utilisateurs existants :
 
-| User name     | Password User |
-| ------------- | ------------- |
-| test1         | S3cret!!      |
-| test2         | S3cret!!      |
+| Nom           | Mot de Passe  | Abonné à      | Suivie part   |
+| ------------- | ------------- | ------------- | ------------- |
+| Camille_201   | S3cret!!      | julie_293     |               |
+| pierre_442    | S3cret!!      | julie_293     | julie_293     |
+| julie_293     | S3cret!!      | pierre_442    | pierre_442    |
 
 
 ### Fonctionnalités
