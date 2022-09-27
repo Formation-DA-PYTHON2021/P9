@@ -89,7 +89,6 @@ def edit_ticket(request, ticket_id):
 def view_review(request, review_id):
     review = get_object_or_404(models.Review, id=review_id)
     ticket_id = review.ticket.pk
-    print(ticket_id)
     ticket = get_object_or_404(models.Ticket, id=ticket_id)
 
     return render(request, 'blog/view_review.html',
@@ -114,7 +113,7 @@ def create_review(request, ticket_id):
             ticket.review = True
             ticket.save()
             return redirect('home')
-        context = {
+    context = {
             'review_form': review_form,
             'ticket': ticket
         }
@@ -131,6 +130,7 @@ def create_review_without_ticket(request):
         if all([ticket_form.is_valid(), review_form.is_valid()]):
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
+            ticket.review = True
             ticket.save()
             review_form.save(commit=False)
             models.Review.objects.create(
@@ -196,8 +196,10 @@ def follow_users(request):
     form = forms.FollowUsersForm()
     user_follows = models.UserFollows.objects.filter(user=request.user)
     followed_by = models.UserFollows.objects.filter(followed_user=request.user)
+    users = User.objects.all()
     if request.method == 'POST':
         form = forms.FollowUsersForm(request.POST)
+
         if form.is_valid():
             try:
                 followed_user = User.objects.get(
@@ -234,6 +236,7 @@ def follow_users(request):
 
     context = {
         'form': form,
+        'users': users,
         'user_follows': user_follows,
         'followed_by': followed_by,
     }

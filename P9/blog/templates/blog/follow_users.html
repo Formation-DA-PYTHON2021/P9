@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Suivre d'autres utilisateurs</h2>
-     <fieldset>
+
+    <fieldset>
+        <h4>Liste des utilisateurs : </h4>
+        <ul>{% for user in users %}
+        <li>{{ user.username}}
+            {% endfor %}
+        </ul>
+
+         <p>Veuillez entrer un nom d'utilisateur :</p>
         <form method="POST" action="{% url 'follow_users' %}" enctype="multipart/form-data">
             {{ form.as_p }}
             {% csrf_token %}
