@@ -33,7 +33,9 @@ https://github.com/Formation-DA-PYTHON2021/P9.git
 
 - Activer l'environnement virtuel avec la commande: 
 
-``python -m venv env\Scripts\activate``
+``python -m venv env``
+
+``source env\Scripts\activate``
 
 - Installer les paquets requis avec la commande : 
 
