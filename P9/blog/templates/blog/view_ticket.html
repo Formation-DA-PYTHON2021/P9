@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="grid_container">
-    <h2>Vous avez publié une critique : </h2>
+    <h2>Vous avez publié une demande de critique : </h2>
       <fieldset>
         <h2>{{ ticket.title }}</h2>
         <p>{{ ticket.description }}</p>
@@ -10,6 +10,9 @@
     {% if ticket.user == request.user %}
         <button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'edit_ticket' ticket.id %}">Modifier le ticket</a></button>
     {% endif %}
+    {% if ticket.review is False %}
     <button type="button" class="btn"><a style="color: #ffffe6"  href="{% url 'create_review' ticket.id %}">Créer une critique</a></button>
-<button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'home' %}">Retour</a></button>
+    {% endif %}
+    <button type="button" class="btn"><a style="color: #ffffe6" href="{% url 'home' %}">Retour</a></button>
+</div>
 {% endblock content %}
